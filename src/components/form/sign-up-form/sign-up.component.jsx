@@ -2,6 +2,8 @@ import { useState } from "react"
 import { createUserBasic, insertUserData } from "../../../utils/firebase/firebase.utils"
 import FormInput from "../../basic input/form-input/formInput.component"
 import Button from  "../../button/button.component"
+import { useDispatch } from "react-redux"
+import { emailSignUpStart } from "../../../store/user/user.action"
 
 
 
@@ -13,6 +15,9 @@ const SignUpForm = () => {
         "password" : "",
         "confirmPassword": ""
     }
+
+    const dispatch = useDispatch()
+
     const [dataForm, setDataForm] = useState(dlft)
     const onChangeInput = (event) => {
         const {name, value} = event.target
@@ -31,11 +36,9 @@ const SignUpForm = () => {
             return 
         }
         try{
-            const data = await createUserBasic(dataForm.email, dataForm.password)
-           
-            insertUserData(data.user, {"displayName":dataForm.name})
+            console.log(dataForm.email, dataForm.password)
+            dispatch(emailSignUpStart(dataForm.name, dataForm.email, dataForm.password))
             
-      
             alert("Success")
             setDataForm(dlft)
             

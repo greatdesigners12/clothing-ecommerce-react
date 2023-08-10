@@ -1,20 +1,27 @@
 import { useContext } from "react"
 import "./checkout-card.style.scss"
-import { CartContext } from "../../../contexts/cart.context"
+import { useDispatch, useSelector } from "react-redux"
+import { minQuantityOnProduct, addItemIntoCart, deleteCartItemFromList} from "../../../store/cart/cart.action"
+import { getAllCart } from "../../../store/cart/cart.selector"
+// import { CartContext } from "../../../contexts/cart.context"
 
 const CheckoutCard = ({cartItem}) => {
     const {name, imageUrl, price, quantity} = cartItem
-    const {minQuantityOnProduct, addItemIntoCart, deleteCartItemFromList} = useContext(CartContext)
+    // const {minQuantityOnProduct, addItemIntoCart, deleteCartItemFromList} = useContext(CartContext)
+    const dispatch = useDispatch()
+    console.log("g")
+
+    const {items} = useSelector(getAllCart)
     const minQuantityFunc = (id) => {
-        minQuantityOnProduct(id)
+        dispatch(minQuantityOnProduct(id, items))
     }
 
     const addQuantity = (cart) => {
-        addItemIntoCart(cart)
+        dispatch(addItemIntoCart( items, cart))
     }
 
     const removeCartProduct = (idx) => {
-        deleteCartItemFromList(idx)
+        dispatch(deleteCartItemFromList(idx, items))
     } 
     return (
         <div className="checkout-item-container">

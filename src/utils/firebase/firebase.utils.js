@@ -49,16 +49,23 @@ export const getCategoriesAndDocuments = async () => {
   const q = query(collectionRef)
 
   const querySnapshot = await getDocs(q)
-
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-    const {title, items} = docSnapshot.data()
-    // dari initial value = {}. Update terus dengan key title.toLowerCase()
-    // dengan value items. acc -> value yang sudah terakumulasi atau hasil
-    // paling update dari setiap penambahan data
-    acc[title.toLowerCase()] = items
-    return acc
-  }, {})
-  return categoryMap
+  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data())
+  // const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+  //   const {title, items} = docSnapshot.data()
+  //   // dari initial value = {}. Update terus dengan key title.toLowerCase()
+  //   // dengan value items. acc -> value yang sudah terakumulasi atau hasil
+  //   // paling update dari setiap penambahan data
+  //   acc[title.toLowerCase()] = items
+  //   return acc
+  // }, {})
+  // return categoryMap
+    //   const {title, items} = docSnapshot.data()
+  //   // dari initial value = {}. Update terus dengan key title.toLowerCase()
+  //   // dengan value items. acc -> value yang sudah terakumulasi atau hasil
+  //   // paling update dari setiap penambahan data
+  //   acc[title.toLowerCase()] = items
+  //   return acc
+  // }, {})
 }
 
 
@@ -67,6 +74,18 @@ export const db = getFirestore(app);
 export const signInWithGooglePopup = () => {
     return signInWithPopup(auth, provider)
 } 
+
+const getCurrentUserData = async (id) => {
+  const docRef = doc(db, "users", id);
+  const docSnap = await getDoc(docRef);
+  
+  if (docSnap.exists()) {
+    return docSnap.data()
+  } else {
+    // docSnap.data() will be undefined in this case
+    return null
+  }
+}
 
 export const SignIn = async (email, password) => {
   try{
@@ -121,6 +140,21 @@ export const createUserBasic = async (email, password) => {
 }
 
 export const authStateListener = (callback) => onAuthStateChanged(auth, callback)
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(auth, async (userAuth) => {
+      
+      const user = {email: userAuth.email, accessToken: userAuth.accessToken}
+      const userId = userAuth.reloadUserInfo.localId
+      const userData = await getCurrentUserData(userId)
+      user["displayName"] = userData ? userData.displayName : ""
+      
+      resolve(user)
+      unsubscribe()
+    }, reject)
+  })
+}
 
 export const signOutFunc = async () => {
     try{

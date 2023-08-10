@@ -1,30 +1,45 @@
-import { createContext, useEffect, useState } from "react"
-import { getCategoriesAndDocuments } from "../utils/firebase/firebase.utils"
+// import { createContext, useEffect, useState, useReducer } from "react"
+// import { getCategoriesAndDocuments } from "../utils/firebase/firebase.utils"
 
 
-export const CategoryContext = createContext({
-    categoriesMap: {},
-})
+// export const CategoryContext = createContext({
+//     categoriesMap: {},
+// })
 
-export const CategoriesProvider = ({children}) => {
+// const CategoryContextType = {
+//     SET_CATEGORIES_DATA:  "SET_CATEGORIES_DATA"
+// }
+
+// const CategoryReducer = (state, action) => {
+//     const {type, payload} = action
+//     switch(type) {
+//         case "SET_CATEGORIES_DATA" :
+//             return payload
+//         default :
+//             throw Error("Invalid type on category reducer")
+//     }
+// }
+
+// export const CategoriesProvider = ({children}) => {
    
-    const [categoriesMap, setCategoriesMap] = useState({})
+//     // const [categoriesMap, setCategoriesMap] = useState({})
+//     const [state, dispatch] = useReducer(CategoryReducer, {})
     
-    useEffect(() => {
+//     useEffect(() => {
         
-        const getData = async () => {
+//         const getData = async () => {
             
-            const data = await getCategoriesAndDocuments()
+//             const data = await getCategoriesAndDocuments()
             
-            setCategoriesMap(data)
+//             dispatch({type : CategoryContextType.SET_CATEGORIES_DATA, payload : data})
             
             
-        }
+//         }
         
-        getData()
-    }, [])
+//         getData()
+//     }, [])
 
-    const value = {categoriesMap}
+//     const value = {categoriesMap: state}
     
-    return <CategoryContext.Provider value={value}>{children}</CategoryContext.Provider>
-}
+//     return <CategoryContext.Provider value={value}>{children}</CategoryContext.Provider>
+// }

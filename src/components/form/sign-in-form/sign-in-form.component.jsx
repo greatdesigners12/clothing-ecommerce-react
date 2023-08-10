@@ -4,6 +4,8 @@ import Button  from "../../button/button.component"
 import {useState } from "react"
 import SignUpForm from "../sign-up-form/sign-up.component"
 import "./sign-in-form.style.scss"
+import { useDispatch } from "react-redux"
+import { emailSignInStart, googleSignInStart } from "../../../store/user/user.action"
 
 
 const SignInForm = () => {
@@ -11,7 +13,8 @@ const SignInForm = () => {
         "email" : "",
         "password" : ""
     }
- 
+    
+    const dispatch = useDispatch()
 
     const [data, setData] = useState(defaultValue)
 
@@ -26,7 +29,7 @@ const SignInForm = () => {
             return alert("Please fill all the input")
         }
 
-        await SignIn(data.email, data.password)
+        dispatch(emailSignInStart(data.email, data.password))
         
 
         
@@ -34,8 +37,7 @@ const SignInForm = () => {
 
     const googleSignIn = async (event) => {
         event.preventDefault()
-        const response = await signInWithGooglePopup()
-        await insertUserData(response.user)
+        dispatch(googleSignInStart())
     }
 
     

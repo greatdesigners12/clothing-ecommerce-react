@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
+import {SpinnerContainer} from "../spinner/spinner.styles.jsx"
 
-
-export const ButtonContainer = styled.div`
+export const ButtonContainer = styled.button`
   min-width: 165px;
   width: auto;
   height: 50px;
@@ -18,6 +18,7 @@ export const ButtonContainer = styled.div`
   cursor: pointer;
   display: flex;
   justify-content: center;
+  align-items: center;
 
   &:hover {
     background-color: white;
@@ -48,4 +49,7 @@ export const InvertedButton = styled(ButtonContainer)`
     border: none;
   }
 `
-
+export const ButtonSpinner = styled(SpinnerContainer)`
+    width: 30px;
+    height: 30px;
+`
